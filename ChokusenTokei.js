@@ -190,17 +190,6 @@ function drawLoop(){
             needlePos = scaleInterval/100*(parseInt(String(yearNow).slice(1) + monthNow/12),10)+nGap; 
             break;
     }
-        //ctx.fillStyle = "rgba(" + [220, 50, 0, 1] + ")";
-        ctx.strokeStyle ="rgba(" + [240, 240, 240, 1] + ")";
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(left_ref + needlePos, wh/2 + 10);
-        ctx.lineTo(left_ref + needlePos - 10, wh/2+50);
-        ctx.lineTo(left_ref + needlePos + 10, wh/2+50);
-        ctx.closePath();
-        //ctx.fill();    
-        ctx.stroke();
-        ctx.fillStyle ="rgba(" + [240, 240, 240, 1] + ")";
     //色
     if(transition2 == 0){
         let s = Math.floor((needlePos)/scaleInterval) * scaleInterval;
@@ -230,6 +219,17 @@ function drawLoop(){
             transition2++;
         }
     }
+            //ctx.fillStyle = "rgba(" + [220, 50, 0, 1] + ")";
+            ctx.strokeStyle ="rgba(" + [240, 240, 240, 1] + ")";
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(left_ref + needlePos, wh/2 + 10);
+            ctx.lineTo(left_ref + needlePos - 10, wh/2+50);
+            ctx.lineTo(left_ref + needlePos + 10, wh/2+50);
+            ctx.closePath();
+            //ctx.fill();    
+            ctx.stroke();
+            ctx.fillStyle ="rgba(" + [240, 240, 240, 1] + ")";
 
     //文字
     switch(timeUnit){
@@ -423,7 +423,6 @@ document.addEventListener('keydown', event => {
             scaleDev = intervalArray[unit_P];
             scaleInterval = (right_ref - left_ref) / scaleDev;
             leftScaleNum_P = Math.floor(pastNeedlepos/scaleInterval);
-            console.log(leftScaleNum_P);
             leftScale_P= left_ref + (scaleInterval * leftScaleNum_P);
             rightScale_P = leftScale_P + scaleInterval;
             scaleInterval_P = scaleInterval;
