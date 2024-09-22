@@ -29,6 +29,7 @@ let leftText;
 let rightText;
 const tr_time = 28;
 const refScale_Tick = 80;
+let nGap = 3;
 const Titles = ["1 minute","1 hour","1 day","1 week","1 month","1 year","1 decade","1 century","1 Millennium"]
 
 
@@ -156,7 +157,6 @@ function drawLoop(){
 
 
     //針
-    let nGap = 3;
     switch(timeUnit){
         case 0:
             needlePos = scaleInterval*(secondNow + milliNow/1000)+nGap;
@@ -171,7 +171,7 @@ function drawLoop(){
             needlePos = scaleInterval*(dayNow + hourNow/24)+nGap;
             break;
         case 4:
-            needlePos = scaleInterval*(dateNow + hourNow/24)+nGap;
+            needlePos = scaleInterval*(dateNow - 1 + hourNow/24)+nGap;
             break;
         case 5:    
             const y = `${new Date().getFullYear()}/1/1`
@@ -192,7 +192,7 @@ function drawLoop(){
     }
     //色
     if(transition2 == 0){
-        let s = Math.floor((needlePos)/scaleInterval) * scaleInterval;
+        let s = Math.floor((needlePos-nGap)/scaleInterval) * scaleInterval;
         ctx.fillStyle = "rgba(" + [240, 0, 0, 0.5] + ")";
         if(s == 0){
             ctx.fillRect(s+tick_l+ left_ref,wh/2-refScale_Tick/2,scaleInterval-tick_l,refScale_Tick/2);
