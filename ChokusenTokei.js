@@ -1,9 +1,10 @@
-// タッチ開始
+window.addEventListener('load', function(){
+    // タッチ開始
 document.getElementById("myCanvas").addEventListener('touchstart', logSwipeStart);
 //スワイプ
 document.getElementById("myCanvas").addEventListener('touchmove', logSwipe);
 // タッチ終了
-document.getElementById("myCanvas").addEventListener('touchend', logSwipeEnd);
+document.getElementById("myCanvas").addEventListener('touchend', logSwipeEnd);});
 const cs = document.getElementById('myCanvas');
 const ctx = cs.getContext('2d');
 let timeUnit = 0;
