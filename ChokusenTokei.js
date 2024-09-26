@@ -1,3 +1,9 @@
+// タッチ開始
+document.getElementById("myCanvas").addEventListener('touchstart', logSwipeStart);
+//スワイプ
+document.getElementById("myCanvas").addEventListener('touchmove', logSwipe);
+// タッチ終了
+document.getElementById("myCanvas").addEventListener('touchend', logSwipeEnd);
 const cs = document.getElementById('myCanvas');
 const ctx = cs.getContext('2d');
 let timeUnit = 0;
@@ -28,7 +34,7 @@ let tick_l = 6;
 let leftText;
 let rightText;
 const tr_time = 28;
-const refScale_Tick = 80;
+let refScale_Tick = 80;
 let nGap = 3;
 const Titles = ["1 minute","1 hour","1 day","1 week","1 month","1 year","1 decade","1 century","1 Millennium"]
 
@@ -67,6 +73,7 @@ function drawLoop(){
     cs.width = ww;
     cs.height = wh;
     ctx.clearRect(0, 0, ww, wh);
+    refScale_Tick = wh / 10;
 
     //直線
     ctx.fillStyle = "rgba(" + [240, 240, 240, 1] + ")"
@@ -296,14 +303,25 @@ function drawLoop(){
     else{
         ctx.fillStyle = "rgba(" + [240, 240, 240, 1] + ")"
     }
-    ctx.font = '600 60px sans-serif';
-    ctx.fillText(Title, 40,wh - 50);
-
-    ctx.font = '600 40px sans-serif';
+    let tsz;
+    let ssz;
+    if(refScale_Tick > 40){
+        tsz = refScale_Tick;
+        ssz = refScale_Tick*3/5;
+    }
+    else{
+        tsz = 40;
+        ssz = 24;
+    }
+    //タイトル文字
+    ctx.font = '600 '+ tsz +'px sans-serif';
+    ctx.fillText(Title, ssz,wh - ssz);
+    //目盛り文字
+    ctx.font = '600 '+ ssz +'px sans-serif';
     ctx.textAlign = "center"
-    ctx.fillText(leftText, left_ref+nGap, wh/2 - refScale_Tick * 1.5);
-    ctx.fillText(rightText, right_ref+nGap, wh/2 - refScale_Tick * 1.5);
-    ctx.fillText(rightText2, right_ref2+nGap, wh/2 - refScale_Tick * 1.5);
+    ctx.fillText(leftText, left_ref+nGap, wh/2 - refScale_Tick * 1.3);
+    ctx.fillText(rightText, right_ref+nGap, wh/2 - refScale_Tick * 1.3);
+    ctx.fillText(rightText2, right_ref2+nGap, wh/2 - refScale_Tick * 1.3);
 
     //1の目盛り(内側)
     //基準目盛り
@@ -404,30 +422,37 @@ function drawLoop(){
     setTimeout(drawLoop, 33 - (end - begin));
 }
 
+function scaleUp(){
+    if(timeUnit < 8 && transition2 == 0 && transition1 == 0){
+        unit_P = timeUnit;
+        timeUnit++;
+        pastNeedlepos = needlePos;
+        transition2 = 1;
+    }
+}
+function scaleDown(){
+    if(timeUnit > 0 && transition2 == 0 && transition1 == 0){
+        unit_P = timeUnit;
+        timeUnit--;
+        pastNeedlepos = needlePos;
+        left_ref = ww/10 + offsetLine;
+        right_ref = 9*ww/10 + offsetLine;
+        scaleDev = intervalArray[unit_P];
+        scaleInterval = (right_ref - left_ref) / scaleDev;
+        leftScaleNum_P = Math.floor(pastNeedlepos/scaleInterval);
+        leftScale_P= left_ref + (scaleInterval * leftScaleNum_P);
+        rightScale_P = leftScale_P + scaleInterval;
+        scaleInterval_P = scaleInterval;
+        transition2 = 1;
+    }
+}
+
 document.addEventListener('keydown', event => {
     if (event.code === 'ArrowUp') {
-        if(timeUnit < 8 && transition2 == 0 && transition1 == 0){
-            unit_P = timeUnit;
-            timeUnit++;
-            pastNeedlepos = needlePos;
-            transition2 = 1;
-        }
+        scaleUp();
     }
     if (event.code === 'ArrowDown') {
-        if(timeUnit > 0 && transition2 == 0 && transition1 == 0){
-            unit_P = timeUnit;
-            timeUnit--;
-            pastNeedlepos = needlePos;
-            left_ref = ww/10 + offsetLine;
-            right_ref = 9*ww/10 + offsetLine;
-            scaleDev = intervalArray[unit_P];
-            scaleInterval = (right_ref - left_ref) / scaleDev;
-            leftScaleNum_P = Math.floor(pastNeedlepos/scaleInterval);
-            leftScale_P= left_ref + (scaleInterval * leftScaleNum_P);
-            rightScale_P = leftScale_P + scaleInterval;
-            scaleInterval_P = scaleInterval;
-            transition2 = 1;
-        }
+        scaleDown();
     }
     if (event.code === 'Digit1') {
         if(transition1 == 0){
@@ -475,3 +500,31 @@ document.addEventListener('keydown', event => {
         }
     }
 });
+let startY;
+let endY;
+let startT;
+let endT;
+function logSwipeStart(event) {
+    event.preventDefault();
+
+    startT = Date.now();
+    startY = event.touches[0].pageY;
+  }
+  function logSwipe(event) {
+    event.preventDefault();
+
+    endY = event.touches[0].pageY;
+  }
+
+  function logSwipeEnd(event) {
+    event.preventDefault();
+
+    endT = Date.now;
+    difT = (endT-startT)
+    if(dif > 10 && difT < 1000){
+    if( 0 < (endY - startY) ) {
+      scaleDown();
+    } else {
+      scaleUp();
+    }}
+  }
