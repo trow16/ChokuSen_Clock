@@ -504,11 +504,11 @@ window.addEventListener('touchstart', (event) =>  {
 
     startT = Date.now();
     startY = event.touches[0].pageY;
-  });
+  })
   window.addEventListener('touchmove', (event) =>  {
 
     endY = event.changedTouches[0].pageY;
-  });
+  })
 
   window.addEventListener('touchend', (event) =>  {
 
@@ -520,4 +520,4 @@ window.addEventListener('touchstart', (event) =>  {
     } else {
       scaleUp();
     }}
-  });
+  })
