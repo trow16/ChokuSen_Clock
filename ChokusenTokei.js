@@ -512,8 +512,8 @@ window.addEventListener('touchstart', (event) =>  {
 
   window.addEventListener('touchend', (event) =>  {
 
-    endT = Date.now;
-    difT = (endT-startT)
+    endT = Date.now();
+    difT = endT - startT;
     if(difT > 10 && difT < 1000){
     if( 0 < (endY - startY) ) {
       scaleDown();
