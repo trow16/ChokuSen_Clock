@@ -1,10 +1,4 @@
-window.addEventListener('load', function(){
-    // タッチ開始
-document.getElementById("myCanvas").addEventListener('touchstart', logSwipeStart);
-//スワイプ
-document.getElementById("myCanvas").addEventListener('touchmove', logSwipe);
-// タッチ終了
-document.getElementById("myCanvas").addEventListener('touchend', logSwipeEnd);});
+
 const cs = document.getElementById('myCanvas');
 const ctx = cs.getContext('2d');
 let timeUnit = 0;
@@ -505,27 +499,25 @@ let startY;
 let endY;
 let startT;
 let endT;
-function logSwipeStart(event) {
-    event.preventDefault();
+
+window.addEventListener('touchstart', (event) =>  {
 
     startT = Date.now();
     startY = event.touches[0].pageY;
-  }
-  function logSwipe(event) {
-    event.preventDefault();
+  });
+  window.addEventListener('touchmove', (event) =>  {
 
     endY = event.changedTouches[0].pageY;
-  }
+  });
 
-  function logSwipeEnd(event) {
-    event.preventDefault();
+  window.addEventListener('touchend', (event) =>  {
 
     endT = Date.now;
     difT = (endT-startT)
-    if(difT > 0 && difT < 1000){
+    if(difT > 10 && difT < 1000){
     if( 0 < (endY - startY) ) {
       scaleDown();
     } else {
       scaleUp();
     }}
-  }
+  });
