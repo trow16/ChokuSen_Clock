@@ -522,7 +522,7 @@ function logSwipeStart(event) {
 
     endT = Date.now;
     difT = (endT-startT)
-    if(dif > 10 && difT < 1000){
+    if(difT > 10 && difT < 1000){
     if( 0 < (endY - startY) ) {
       scaleDown();
     } else {
