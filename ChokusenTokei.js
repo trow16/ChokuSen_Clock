@@ -514,7 +514,7 @@ function logSwipeStart(event) {
   function logSwipe(event) {
     event.preventDefault();
 
-    endY = event.touches[0].pageY;
+    endY = event.changedTouches[0].pageY;
   }
 
   function logSwipeEnd(event) {
